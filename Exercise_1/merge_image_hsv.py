@@ -23,7 +23,7 @@ roi = background[y_settled:y_settled + h_fg, x_settled:x_settled + w_fg]
 mask_inv = cv.bitwise_not(mask) 
 cv.imshow("Inverted Mask", mask_inv)
 
-# vị trí của con cá --> đen --> sử dụng thresh_inverted
+# vị trí của 'con cá đen' --> sử dụng thresh_inverted
 bg_masked = cv.bitwise_and(roi, roi, mask=mask_inv)
 # lấy vùng hình con cá 
 fg_masked = cv.bitwise_and(transparent_fish, transparent_fish, mask=mask)
