@@ -18,9 +18,11 @@ git clone https://github.com/daothanhphuc/intern_project.git
 
 ## Note of difference between merging image using contours and hsv
 ### In case of using get_fish_contours.py:
+- Threshold for mask is (120)
 - fg_masked = cv.bitwise_and(fish, fish, mask=mask_inv)
 - bg_masked = cv.bitwise_and(roi, roi, mask=mask)
 
 ### In case of using get_fish_hsv.py:
+- Threshold for mask is (5)
 - fg_masked = cv.bitwise_and(fish, fish, mask=mask)
 - bg_masked = cv.bitwise_and(roi, roi, mask=mask_inv)
