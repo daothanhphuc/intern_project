@@ -1,5 +1,6 @@
-# Khởi tạo môi trường 
+# Get all necessary libs 
 pip install opencv-python
+pip install numpy
 # Get repo 
 git clone https://github.com/daothanhphuc/intern_project.git
 # Task 1: 
