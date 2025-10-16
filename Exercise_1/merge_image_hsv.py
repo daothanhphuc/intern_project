@@ -1,15 +1,21 @@
 import cv2 as cv
 import numpy as np 
 
-background = cv.imread(r"c:\Users\ADMIN\Downloads\130-hinh-nen-may-tinh-4k-7-1024x640.jpg")
-transparent_fish = cv.imread(r"data\transparent_fish.png")
-transparent_fish = cv.resize(transparent_fish,(200,150))
+background = cv.imread(r"data\130-hinh-nen-may-tinh-4k-7-1024x640.jpg")
+# fish = cv.imread(r"data\transparent_fish.png")
+fish = cv.imread(r"data\fish_contour.png")
+fish = cv.resize(fish,(200,150))
+cv.imshow("Fish", fish)
 
-gray_fish = cv.cvtColor(transparent_fish, cv.COLOR_BGR2GRAY)
-ret, mask = cv.threshold(gray_fish, 5, 255, cv.THRESH_BINARY)
+gray_fish = cv.cvtColor(fish, cv.COLOR_BGR2GRAY)
+ret, mask = cv.threshold(gray_fish, 120, 255, cv.THRESH_BINARY)
 cv.imshow("Mask", mask)
 
-h_fg, w_fg, _ = transparent_fish.shape
+kernel = np.ones((2,2), np.uint8)
+mask = cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
+cv.imshow("Mask after Morphology", mask)
+
+h_fg, w_fg, _ = fish.shape
 h_bg, w_bg, _ = background.shape
 
 x_settled = w_bg - w_fg
@@ -23,10 +29,11 @@ roi = background[y_settled:y_settled + h_fg, x_settled:x_settled + w_fg]
 mask_inv = cv.bitwise_not(mask) 
 cv.imshow("Inverted Mask", mask_inv)
 
+# !!! --> parameter 'mask' in bg_masked and fg_masked must be swap when using transparent_fish.png
 # vị trí của 'con cá đen' --> sử dụng thresh_inverted
-bg_masked = cv.bitwise_and(roi, roi, mask=mask_inv)
+bg_masked = cv.bitwise_and(roi, roi, mask=mask)
 # lấy vùng hình con cá 
-fg_masked = cv.bitwise_and(transparent_fish, transparent_fish, mask=mask)
+fg_masked = cv.bitwise_and(fish, fish, mask=mask_inv)
 
 composed_roi = cv.add(bg_masked, fg_masked)
 
