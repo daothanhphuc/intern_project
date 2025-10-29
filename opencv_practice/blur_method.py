@@ -16,10 +16,10 @@ def padding(img, pad_size):
     pad_img[pad_size:pad_size+h, pad_size:pad_size+w] = img
     return pad_img
 
-#implement from scratch
 def average_blur(image, kernel_size): 
     kernel = np.ones((kernel_size,kernel_size,3), dtype=np.float32)
-    kernel = kernel/(kernel_size*kernel_size)
+    # kernel = kernel/(kernel_size*kernel_size)
+    kernel[0, :] = 2 
     height, width = image.shape[:2]
     # print(height, width)
     pad_img = padding(image, kernel_size//2)
@@ -27,16 +27,16 @@ def average_blur(image, kernel_size):
     for i in range(height):
         for j in range(width):
             roi = pad_img[i:i+kernel_size, j:j+kernel_size]
-            out[i,j] = np.sum(roi*kernel, axis=(0,1) )
+            out[i ,j] = np.sum(roi*kernel, axis=(0,1) )
     height,width = out.shape[:2]
     final = out[0:height - 2*(kernel_size//2 ), 0:width - 2*(kernel_size//2 )]
     return final
 
-average = cv.blur(img, (5,5))
+average = cv.blur(img, (25,1))
 cv.imshow('Average Blurring', average)
 print(average.shape)
 
-blur_from_scratch = average_blur(img, kernel_size=5)
+blur_from_scratch = average_blur(img, kernel_size=10)
 cv.imshow('Average Blurring from scratch', blur_from_scratch)
 print(blur_from_scratch.shape)
 
